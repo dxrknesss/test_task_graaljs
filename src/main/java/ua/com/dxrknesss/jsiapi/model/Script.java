@@ -1,4 +1,4 @@
-package ua.com.dxrknesss.jsiapi;
+package ua.com.dxrknesss.jsiapi.model;
 
 import java.io.OutputStream;
 import java.time.LocalDateTime;
