@@ -1,5 +1,6 @@
 package ua.com.dxrknesss.jsiapi.repository;
 
+import org.springframework.stereotype.Repository;
 import ua.com.dxrknesss.jsiapi.model.Script;
 
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Repository
 public class ScriptsRepositoryImpl implements ScriptsRepository {
     private static Map<Long, Script> scripts = new ConcurrentHashMap<>();
     private static AtomicLong idCounter = new AtomicLong(0L);
@@ -27,11 +29,12 @@ public class ScriptsRepositoryImpl implements ScriptsRepository {
     @Override
     public void addScript(Script script) {
         Long id = idCounter.getAndIncrement();
+        script.setId(id);
         scripts.put(id, script);
     }
 
     @Override
-    public void removeScript(Long id) throws NoSuchElementException {
+    public void removeScript(Long id) {
         scripts.remove(id);
     }
 }
