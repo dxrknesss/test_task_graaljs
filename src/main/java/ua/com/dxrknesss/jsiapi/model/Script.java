@@ -1,13 +1,12 @@
 package ua.com.dxrknesss.jsiapi.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 public class Script {
     private Long id;
     private String body;
@@ -15,7 +14,9 @@ public class Script {
     public enum ExecutionPhase {
         QUEUED, RUNNING, COMPLETED, ERROR_EXITED
     }
+    @EqualsAndHashCode.Exclude
     private OutputStream stdout;
+    @EqualsAndHashCode.Exclude
     private OutputStream stderr;
     private LocalDateTime scheduleTime;
     private LocalDateTime executionStartTime;

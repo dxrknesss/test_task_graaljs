@@ -20,7 +20,7 @@ public class ScriptController {
     public ResponseEntity<Script> findOne(@PathVariable(name = "id") Long id) {
         Script script;
         try {
-            script = scriptsRepository.findOneById(id);
+            script = scriptsRepository.findScriptById(id);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

@@ -5,23 +5,31 @@ import ua.com.dxrknesss.jsiapi.model.Script;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ScriptsRepositoryImpl implements ScriptsRepository {
-    private static Map<Long, Script> scripts = new ConcurrentHashMap<>();
-    private static AtomicLong idCounter = new AtomicLong(0L);
+    private static final Map<Long, Script> scripts = new ConcurrentHashMap<>();
+    private static final AtomicLong idCounter = new AtomicLong(0L);
 
     @Override
-    public Script findOneById(Long id) throws NoSuchElementException {
+    public Set<Script> findAllScripts() {
+        return Set.copyOf(scripts.values());
+    }
+
+    @Override
+    public Script findScriptById(Long id) throws NoSuchElementException {
         return returnScriptOrThrow(id);
     }
 
     private Script returnScriptOrThrow(Long id) throws NoSuchElementException {
-        var script = scripts.get(id);
-        if (script != null) {
-            return script;
+        if (id != null) {
+            var script = scripts.get(id);
+            if (script != null) {
+                return script;
+            }
         }
         throw new NoSuchElementException("Script wasn't found by specified id!");
     }
@@ -35,6 +43,17 @@ public class ScriptsRepositoryImpl implements ScriptsRepository {
 
     @Override
     public void removeScript(Long id) {
-        scripts.remove(id);
+        if (id != null) {
+            scripts.remove(id);
+        }
+    }
+
+    @Override
+    public void removeAllScripts() {
+        for (var key : scripts.keySet()) {
+            scripts.remove(key);
+        }
+
+        idCounter.set(0);
     }
 }
