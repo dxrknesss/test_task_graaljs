@@ -24,5 +24,6 @@ public class Script {
     public Script(String scriptBody) {
         this.body = scriptBody;
         this.scheduleTime = LocalDateTime.now();
+        this.phase = ExecutionPhase.QUEUED;
     }
 }
