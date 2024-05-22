@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JsiapiApplication.class)
-public class ScriptRepositoryTest {
+public class ScriptRepositoryTests {
     private Set<Script> scripts;
     private Script initScript1, initScript2, newScript;
     @Autowired
