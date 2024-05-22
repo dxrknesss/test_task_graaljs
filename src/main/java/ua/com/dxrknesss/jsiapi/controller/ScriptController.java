@@ -7,17 +7,24 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ua.com.dxrknesss.jsiapi.model.Script;
 import ua.com.dxrknesss.jsiapi.repository.ScriptsRepository;
+import ua.com.dxrknesss.jsiapi.service.ScriptExecutionService;
 
 import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/v1/scripts")
 public class ScriptController {
+    private final ScriptsRepository scriptsRepository;
+    private final ScriptExecutionService executionService;
+
     @Autowired
-    ScriptsRepository scriptsRepository;
+    public ScriptController(ScriptsRepository scriptsRepository, ScriptExecutionService executionService) {
+        this.scriptsRepository = scriptsRepository;
+        this.executionService = executionService;
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Script> findOne(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<Script> findScript(@PathVariable(name = "id") Long id) {
         Script script;
         try {
             script = scriptsRepository.findScriptById(id);
@@ -27,9 +34,12 @@ public class ScriptController {
         return ResponseEntity.ok(script);
     }
 
-    @PostMapping public ResponseEntity<String> addOne(@RequestBody String scriptBody) {
+    @PostMapping
+    public ResponseEntity<String> addScriptToExecutionQueue(@RequestBody String scriptBody) {
         Script script = new Script(scriptBody);
-        scriptsRepository.addScript(script);
+
+        executionService.addScriptToExecutionQueue(script);
+//        scriptsRepository.addScript(script);
 
         return ResponseEntity.ok("Script has been scheduled successfully!");
     }
